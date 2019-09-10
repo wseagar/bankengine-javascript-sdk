@@ -1,17 +1,6 @@
-
-export interface IAuthSettings {
-  scope: string[];
-  nonce: string;
-  state?: string;
-}
-
-export interface ITokenResponse {
-  access_token: string;
-  refresh_token: string;
-}
-
 import axios, { AxiosRequestConfig } from "axios";
 import qs from "qs";
+import { ITokenResponse } from 'models/ITokenResponse';
 
 export class AuthClient {
   private readonly _authBaseUrl: string = "https://auth.bankengine.nz"
@@ -28,18 +17,18 @@ export class AuthClient {
     }
   }
 
-  public generateAuthorizationURL(authSettings: IAuthSettings): string {
-    const scopes: string = authSettings.scope.join(" ");
+  public generateAuthorizationURL(scope: string[], nonce: string, state?: string): string {
+    const scopes: string = scope.join(" ");
     let url: string =
       `${this._authBaseUrl}/connect/authorize/callback?` +
       `response_type=code&` +
       `client_id=${this._clientId}&` +
       `redirect_uri=${this._redirectUri}&` +
       `scope=${scopes}&` +
-      `nonce=${authSettings.nonce}`;
+      `nonce=${nonce}`;
 
-    if (authSettings.state) {
-      url += `&state=${authSettings.state}`;
+    if (state) {
+      url += `&state=${state}`;
     }
 
     return encodeURI(url);
