@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import qs from "qs";
-import { ITokenResponse } from 'models/ITokenResponse';
+import { TokenResponse } from 'models/TokenResponse';
 
 export class AuthClient {
   private readonly _authBaseUrl: string = "https://auth.bankengine.nz"
@@ -34,7 +34,7 @@ export class AuthClient {
     return encodeURI(url);
   }
 
-  public async exchangeToken(code: string): Promise<ITokenResponse> {
+  public async exchangeToken(code: string): Promise<TokenResponse> {
     const options = {
       grant_type: "authorization_code",
       client_id: this._clientId,
@@ -46,7 +46,7 @@ export class AuthClient {
     return await this.callTokenEndpoint(options);
   }
 
-  public async refreshToken(refreshToken: string): Promise<ITokenResponse> {
+  public async refreshToken(refreshToken: string): Promise<TokenResponse> {
     const options = {
       grant_type: "refresh_token",
       client_id: this._clientId,
