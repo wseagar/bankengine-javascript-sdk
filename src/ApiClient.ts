@@ -2,6 +2,7 @@ import decode from "jwt-decode";
 import moment from "moment";
 import axios, { AxiosRequestConfig } from "axios";
 import { Data } from 'models/Data';
+import { Account } from 'models/Account';
 import { Transaction } from 'models/Transaction';
 import { JWT } from 'models/JWT';
 import { UserInfo } from 'models/UserInfo';

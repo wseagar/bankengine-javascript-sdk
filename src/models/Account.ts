@@ -9,8 +9,14 @@ export interface Account {
     links: AccountLinks;
 }
 
-export interface AccountLinks {
+interface AccountLinks {
     self: string;
     balances: string;
     transactions: string;
+}
+
+interface Provider {
+    providerId: string;
+    displayName: string;
+    logoUri?: string;
 }
