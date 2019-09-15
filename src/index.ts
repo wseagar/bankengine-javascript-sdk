@@ -1,2 +1,4 @@
-export { AuthClient } from './AuthClient';
-export { ApiClient } from './ApiClient';
+
+
+export {default as AuthClient} from './AuthClient';
+export {default as ApiClient} from './ApiClient';

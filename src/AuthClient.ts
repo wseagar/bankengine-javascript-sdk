@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import qs from "qs";
 import { TokenResponse } from 'models/TokenResponse';
 
-export class AuthClient {
+export default class AuthClient {
   private readonly _authBaseUrl: string = "https://auth.bankengine.nz"
   private readonly _clientId: string;
   private readonly _clientSecret: string;
@@ -66,10 +66,9 @@ export class AuthClient {
       data: qs.stringify(options)
     };
     const resp = await axios(request);
-    const json = JSON.parse(resp.data);
     return {
-      access_token: json.access_token,
-      refresh_token: json.refresh_token
+      access_token: resp.data.access_token,
+      refresh_token: resp.data.refresh_token
     };
   }
 }

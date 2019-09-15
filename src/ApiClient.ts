@@ -7,7 +7,7 @@ import { Transaction } from 'models/Transaction';
 import { JWT } from 'models/JWT';
 import { UserInfo } from 'models/UserInfo';
 
-export class ApiClient {
+export default class ApiClient {
     
     private readonly _apiUrl: string = "https://api.bankengine.nz"
 
@@ -17,7 +17,7 @@ export class ApiClient {
         }
     }
 
-    public async execute<T>(path: string, accessToken: string) : Promise<Data<T>> {
+    public async execute<T>(accessToken: string, path: string, ) : Promise<Data<T>> {
         const validToken = this.isTokenValid(accessToken);
         if (!validToken) {
             throw new Error("Expired access token");
@@ -33,7 +33,7 @@ export class ApiClient {
         };
 
         const resp = await axios(request);
-        const result : Data<T> = JSON.parse(resp.data);
+        const result : Data<T> = resp.data;
         return result;
     }
 
