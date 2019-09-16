@@ -63,6 +63,32 @@ export default class ApiClient {
         return await this.execute<Transaction>(accessToken, uri);
     }
 
+    public async postPayment(accessToken: string, fromAccount: string, toAccount: string, description: string, amount: number) {
+        const options = {
+            fromAccount: fromAccount,
+            toAccount : toAccount,
+            description : description,
+            amount : amount
+        };
+
+        const request: AxiosRequestConfig = {
+            baseURL: this._apiUrl,
+            url: "payments/v0/createPayment",
+            method: "POST",
+            headers: {
+              "Authorization": "Bearer " + accessToken
+            },
+            data: options
+        };
+
+        try {
+            await axios(request);
+        }
+        catch (e) {
+            throw new Error("Payment invalid");
+        }
+    }
+
     public async getUserInfo(accessToken: string) : Promise<Data<UserInfo>> {
         return await this.execute<UserInfo>(accessToken, `/data/v1/userinfo`);
     }
