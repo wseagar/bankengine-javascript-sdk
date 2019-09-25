@@ -6,6 +6,7 @@ import { Account } from 'models/Account';
 import { Transaction } from 'models/Transaction';
 import { JWT } from 'models/JWT';
 import { UserInfo } from 'models/UserInfo';
+import { PaymentRequest } from 'models/PaymentRequest';
 
 export default class ApiClient {
     
@@ -49,7 +50,7 @@ export default class ApiClient {
         return await this.execute<Account>(accessToken, `/data/v1/accounts/${accountId}/balance`);
     }
 
-    public async getTransactions(accessToken: string, accountId: string, from?: string, to?: string) : Promise<Data<Transaction>> {
+    public async getTransactions(accessToken: string, accountId: string, from?: Date, to?: Date) : Promise<Data<Transaction>> {
         let qs: string | undefined;
         if (from && to) {
             qs = `?from=${this.parseDateToISO(from)}&to=${this.parseDateToISO(to)}`;
@@ -63,22 +64,15 @@ export default class ApiClient {
         return await this.execute<Transaction>(accessToken, uri);
     }
 
-    public async postPayment(accessToken: string, fromAccount: string, toAccount: string, description: string, amount: number) {
-        const options = {
-            fromAccount: fromAccount,
-            toAccount : toAccount,
-            description : description,
-            amount : amount
-        };
-
+    public async postPayment(accessToken: string, paymentRequest: PaymentRequest) {
         const request: AxiosRequestConfig = {
             baseURL: this._apiUrl,
-            url: "payments/v0/createPayment",
+            url: "payments/v0/payment",
             method: "POST",
             headers: {
               "Authorization": "Bearer " + accessToken
             },
-            data: options
+            data: paymentRequest
         };
 
         try {
@@ -90,18 +84,17 @@ export default class ApiClient {
     }
 
     public async getUserInfo(accessToken: string) : Promise<Data<UserInfo>> {
-        return await this.execute<UserInfo>(accessToken, `/data/v1/userinfo`);
+        return await this.execute<UserInfo>(accessToken, `/identity/v0/userinfo`);
     }
 
-    public parseDateToISO(input: string) : string {
+    public parseDateToISO(date: Date) : string {
         try {
-            var date = new Date(input);
             var dateString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000 ))
                     .toISOString()
                     .split("T")[0];
             return dateString;
         } catch (e){
-            throw new Error(`${input} is not a valid javascript date string`);
+            throw new Error(`${date} is not a valid javascript date`);
         }
     }
 
