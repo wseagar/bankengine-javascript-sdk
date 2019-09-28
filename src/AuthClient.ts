@@ -68,7 +68,8 @@ export default class AuthClient {
     const resp = await axios(request);
     return {
       access_token: resp.data.access_token,
-      refresh_token: resp.data.refresh_token
+      refresh_token: resp.data.refresh_token,
+      expires_in: resp.data.expires_in
     };
   }
 }
