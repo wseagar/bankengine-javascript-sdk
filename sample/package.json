@@ -13,6 +13,6 @@
     "bankengine-js-sdk": "file:..",
     "cookie-parser": "^1.4.4",
     "ejs": "^2.7.1",
-    "express": "^4.17.1"
+    "express": "^4.17.3"
   }
 }
